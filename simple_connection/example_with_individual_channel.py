@@ -5,15 +5,16 @@ import time
 from utils import connector
 from utils import funcs
 
-QUEUE_NAME = "example_shared_channel"
+QUEUE_NAME = "example_with_individual_channel"
 i = 0
 
 
 async def send_message_with_shared_channel():
     global i
     conct = connector.Connector()
-    shared_channel = await conct.get_channel()
-    await shared_channel.basic_publish(
+    conn = await conct.get_connection()
+    individual_channel = await conn.channel()
+    await individual_channel.basic_publish(
         body=json.dumps({
             "some": "obj"
         }).encode(),
