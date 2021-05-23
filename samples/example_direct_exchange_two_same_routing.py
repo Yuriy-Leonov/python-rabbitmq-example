@@ -10,6 +10,7 @@ EXCHANGE_NAME = "simple_direct_exchange"
 QUEUE_NAME_GREEN = "example_direct_exchange_green"
 QUEUE_NAME_RED = "example_direct_exchange_red"
 QUEUE_NAME_BLUE = "example_direct_exchange_blue"
+QUEUE_NAME_GREEN_TWO = "example_direct_exchange_green_two"
 
 
 async def send_message_with_shared_channel():
@@ -18,7 +19,7 @@ async def send_message_with_shared_channel():
     await shared_channel.basic_publish(
         b"Some text",
         exchange=EXCHANGE_NAME,
-        routing_key=ROUTING_KEY,
+        routing_key=ROUTING_KEY
     )
 
 
@@ -26,12 +27,18 @@ async def main():
     await funcs.declare_queue(queue_name=QUEUE_NAME_GREEN)
     await funcs.declare_queue(queue_name=QUEUE_NAME_RED)
     await funcs.declare_queue(queue_name=QUEUE_NAME_BLUE)
+    await funcs.declare_queue(queue_name=QUEUE_NAME_GREEN_TWO)
     await funcs.declare_exchange(
         exchange_name=EXCHANGE_NAME,
         exchange_type="direct",
     )
     await funcs.bind_queue(
         queue_name=QUEUE_NAME_GREEN,
+        exchange_name=EXCHANGE_NAME,
+        routing_key=ROUTING_KEY
+    )
+    await funcs.bind_queue(
+        queue_name=QUEUE_NAME_GREEN_TWO,
         exchange_name=EXCHANGE_NAME,
         routing_key=ROUTING_KEY
     )
