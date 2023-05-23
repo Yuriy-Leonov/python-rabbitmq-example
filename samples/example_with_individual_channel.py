@@ -9,7 +9,7 @@ QUEUE_NAME = "example_with_individual_channel"
 i = 0
 
 
-async def send_message_with_shared_channel():
+async def send_message_with_individual_channel():
     global i
     conct = connector.Connector()
     conn = await conct.get_connection()
@@ -27,7 +27,7 @@ async def send_message_with_shared_channel():
 async def main():
     await funcs.declare_queue(queue_name=QUEUE_NAME)
     tasks = [
-        send_message_with_shared_channel()
+        send_message_with_individual_channel()
         for _ in range(10000)
     ]
     await asyncio.gather(*tasks)
